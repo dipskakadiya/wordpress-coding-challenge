@@ -84,7 +84,7 @@ class Block {
 					<li>
 						<?php
 						// translators: 1: Post counts, 2: Post type label.
-						echo sprintf( esc_html__( 'There are %1$d %2$s.', 'site-counts' ), esc_html( $post_count->publish, 'site-counts' ), esc_html( $post_type_object->labels->name, 'site-counts' ) );
+						echo sprintf( esc_html__( 'There are %1$d %2$s.', 'site-counts' ), esc_html( $post_count->publish ), esc_html( $post_type_object->labels->name ) );
 						?>
 					</li>
 				<?php endforeach; ?>
@@ -93,7 +93,7 @@ class Block {
 				<p>
 					<?php
 					// translators: 1: Post ID.
-					echo sprintf( esc_html__( 'The current post ID is %d.', 'site-counts' ), esc_html( $post_id, 'site-counts' ) );
+					echo sprintf( esc_html__( 'The current post ID is %d.', 'site-counts' ), esc_html( $post_id ) );
 					?>
 				</p>
 			<?php } ?>

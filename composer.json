@@ -35,6 +35,9 @@
       "@composer validate --strict",
       "phpcs ."
     ],
+    "lint-fix": [
+      "phpcbf ."
+    ],
     "test": [
       "phpunit --do-not-cache-result"
     ],

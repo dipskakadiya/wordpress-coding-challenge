@@ -171,13 +171,6 @@ class TestBlock extends TestCase {
 	}
 
 	/**
-	 * Mocks get_post_type_object().
-	 *
-	 * @param string $singular The singular form of the CPT.
-	 * @param string $plural   The plural form of the CPT.
-	 */
-
-	/**
 	 * Mocks wp_count_posts
 	 *
 	 * @param int $post_count Posts counts.

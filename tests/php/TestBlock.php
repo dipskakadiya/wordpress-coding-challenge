@@ -124,16 +124,25 @@ class TestBlock extends TestCase {
 		WP_Mock::userFunction( 'get_post_types' )
 			->with( [ 'public' => true ] )
 			->andReturn( [ 'post', 'page', 'attachment' ] );
+		WP_Mock::userFunction( 'wp_kses_post' )
+			->with( 'Lorem Ipsum' )
+			->andReturn( 'Lorem Ipsum' );
 
 		$this->mock_get_post_type_object( 'Post', 'Posts' );
 		$this->mock_get_post_type_object( 'Page', 'Pages' );
 		$this->mock_get_post_type_object( 'Media', 'Media' );
 
-		$this->mock_get_posts( $post_count );
-		$this->mock_get_posts( $page_count );
-		$this->mock_get_posts( $attachment_count );
+		$this->mock_wp_count_posts( $post_count );
+		$this->mock_wp_count_posts( $page_count );
+		$this->mock_wp_count_posts( $attachment_count );
 
 		$this->mock_wp_query();
+
+		$this->mock_get_the_title( 'Lorem Ipsum' );
+		$this->mock_get_the_title( 'Lorem Ipsum' );
+		$this->mock_get_the_title( 'Lorem Ipsum' );
+		$this->mock_get_the_title( 'Lorem Ipsum' );
+		$this->mock_get_the_title( 'Lorem Ipsum' );
 
 		Mockery::mock( 'overload:WP_Block' );
 
@@ -162,23 +171,39 @@ class TestBlock extends TestCase {
 	}
 
 	/**
-	 * Mocks get_posts().
+	 * Mocks get_post_type_object().
 	 *
-	 * @param int $post_count The number of posts.
+	 * @param string $singular The singular form of the CPT.
+	 * @param string $plural   The plural form of the CPT.
 	 */
-	function mock_get_posts( $post_count ) {
-		WP_Mock::userFunction( 'get_posts' )
-			->once()
-			->andReturn( array_fill( 0, $post_count, new stdClass() ) );
+
+	/**
+	 * Mocks wp_count_posts
+	 *
+	 * @param int $post_count Posts counts.
+	 */
+	function mock_wp_count_posts( $post_count ) {
+		$post          = new stdClass();
+		$post->publish = $post_count;
+
+		WP_Mock::userFunction( 'wp_count_posts' )->once()->andReturn( $post );
+	}
+
+	/**
+	 * Mocks get_the_title().
+	 *
+	 * @param string $post_content Post content.
+	 */
+	function mock_get_the_title( $post_content ) {
+		WP_Mock::userFunction( 'get_the_title' )->once()->andReturn( $post_content );
 	}
 
 	/**
 	 * Mocks WP_Query.
 	 */
 	function mock_wp_query() {
-		$mock_post             = new stdClass();
-		$mock_post->post_title = 'Lorem Ipsum';
-		$mock_wp_query         = Mockery::mock( 'overload:WP_Query' );
+		$mock_post     = 2323;
+		$mock_wp_query = Mockery::mock( 'overload:WP_Query' );
 		$mock_wp_query->shouldReceive( 'have_posts' )
 			->andReturn( true )
 			->andSet( 'posts', array_fill( 0, 5, $mock_post ) );
